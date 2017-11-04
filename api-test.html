@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <form action="">
+        <!-- <input type="text" name="ID">
+        <input type="submit" value="submitID" id="subID"> -->
+
+    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="btn-group">
+                    <button class="btn btn-primary hr-btn">HR</button>
+                    <button class="btn btn-success management-btn">Management</button>
+                    <button class="btn btn-info purchase-btn">Purchase</button>
+                    <button class="limit-btn">Hr-Limit</button>
+                    <button class="oneID">ID</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table id="eszter" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="api/main.js"></script>
+    <script>
+        var tableData = [];
+        var targetTable = document.querySelector("#eszter");
+        var dict = {};
+        getJson("js/dict.json", function (json) {
+            dict = json;
+        });
+
+
+        //HR selectors(select one ID)
+        document.querySelector(".oneID")
+            .addEventListener("click", function () {
+                getJson("api/hr/2", function (hroneID) {
+                    tableData = hroneID;
+                    fillTable(tableData);
+
+                });
+            });
+
+        //HR selectors(select all)
+        document.querySelector(".hr-btn")
+            .addEventListener("click", function () {
+                getJson("api/hr", function (hr) {
+                    tableData = hr;
+                    fillTable(tableData);
+                });
+            });
+
+        //HR selectors(limit)
+        document.querySelector(".limit-btn")
+            .addEventListener("click", function () {
+                getJson("/hr/limit/2", function (hrlimit) {
+                    tableData = hrlimit;
+                    fillTable(tableData);
+                });
+            });
+
+        //Management selectors (select all)
+        document.querySelector(".management-btn")
+            .addEventListener("click", function () {
+                getJson("api/management", function (management) {
+                    tableData = management;
+                    fillTable(tableData);
+                });
+            });
+
+        //purchase selectors (select all)
+        document.querySelector(".purchase-btn")
+            .addEventListener("click", function () {
+                getJson("api/purchase", function (purchase) {
+                    tableData = purchase;
+                    fillTable(tableData);
+                });
+            });
+
+        function fillTable(data) {
+
+
+            // Fejléc generálása.
+            var head = "";
+            for (var k in data[0]) {
+                head += "<th>" + (dict[k] || "-") + "</th>";
+            }
+            head += "<th></th>";
+            targetTable.querySelector("thead tr").innerHTML = head;
+
+            var content = "";
+            for (var k in data) {
+                var tr = "<tr>";
+                for (var j in data[k]) {
+                    tr += "<td>" + data[k][j] + "</td>";
+                }
+                tr += '<td><button onclick="clickRowBtn(this)" class="btn btn-info row-btn" data-id="' + data[k].customer_id +
+                    '"' +
+                    '>tovább</button></td>';
+                content += tr + "</tr>";
+            }
+            targetTable.querySelector("tbody").innerHTML = content;
+        }
+    </script>
+</body>
+
+</html>
