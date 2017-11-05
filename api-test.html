@@ -11,26 +11,26 @@
 </head>
 
 <body>
+    <form action="">
+        <!-- <input type="text" name="ID">
+        <input type="submit" value="submitID" id="subID"> -->
+
+    </form>
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="btn-group">
-                    <button class="btn btn-primary hr-btn">HumanResource</button>
-                    <button class="btn btn-secondary logistics-btn">Logistics</button>
-                    <button class="btn btn-success maintenance-btn">Maintenance</button>
-                    <button class="btn btn-one onelogistics-btn">Logisticsone</button>
-                    <button class="btn btn-one onemaintenance-btn">Maintenanceone</button>
-                    <button class="btn btn-one limitlogistics-btn">First Three Logistics</button>
-                    <button class="btn btn-one limitmaintenance-btn">First Three maintenance</button>
-
-
+                    <button id="hr-head-btn" class="btn btn-primary hr-btn">HR</button>
+                    <button class="btn btn-success management-btn">Management</button>
+                    <button class="btn btn-info purchase-btn">Purchase</button>
+                    <button class="limit-btn">Hr-Limit</button>
+                    <button class="oneID">ID</button>
                 </div>
             </div>
-            <br>
         </div>
         <div class="row">
-            <table id="eszter" class="table table-hover">
-                <thead>
+            <table id="heading" class="table table-hover">
+                <thead id="hr-head">
                     <tr>
                         <th></th>
                         <th></th>
@@ -46,13 +46,17 @@
     </div>
     <script src="api/main.js"></script>
     <script>
-        var tableData = [];
-        var targetTable = document.querySelector("#eszter");
-        var dict = {};
-        getJson("js/dict.json", function (json) {
-            dict = json;
-        });
-        //Részleglekérő gombok : 
+        //HR selectors(select one ID)
+        document.querySelector(".oneID")
+            .addEventListener("click", function () {
+                getJson("api/hr/2", function (hroneID) {
+                    tableData = hroneID;
+                    fillTable(tableData);
+
+                });
+            });
+
+        //HR selectors(select all)
         document.querySelector(".hr-btn")
             .addEventListener("click", function () {
                 getJson("api/hr", function (hr) {
@@ -61,59 +65,50 @@
                 });
             });
 
-        document.querySelector(".logistics-btn")
+        //HR selectors(limit)
+        document.querySelector(".limit-btn")
             .addEventListener("click", function () {
-                getJson("api/logistics", function (logistics) {
-                    tableData = logistics;
+                getJson("/hr/limit/2", function (hrlimit) {
+                    tableData = hrlimit;
                     fillTable(tableData);
                 });
             });
 
-        document.querySelector(".maintenance-btn")
+        //Management selectors (select all)
+        document.querySelector(".management-btn")
             .addEventListener("click", function () {
-                getJson("api/maintenance", function (maintenance) {
-                    tableData = maintenance;
+                getJson("api/management", function (management) {
+                    tableData = management;
                     fillTable(tableData);
                 });
             });
 
-        document.querySelector(".onelogistics-btn")
+        //purchase selectors (select all)
+        document.querySelector(".purchase-btn")
             .addEventListener("click", function () {
-                getJson("api/one_logistics", function (onelogistics) {
-                    tableData = onelogistics;
+                getJson("api/purchase", function (purchase) {
+                    tableData = purchase;
                     fillTable(tableData);
                 });
             });
 
-        document.querySelector(".onemaintenance-btn")
-            .addEventListener("click", function () {
-                getJson("api/one_maintenance", function (onemaintenance) {
-                    tableData = onemaintenance;
-                    fillTable(tableData);
-                });
-            });
-
-        document.querySelector(".limitmaintenance-btn").addEventListener("click", function () {
-            getJson("api/limit_maintenance", function (maintenance) {
-                tableData = maintenance;
-                fillTable(tableData);
-            });
-        });
-
-        document.querySelector(".limitlogistics-btn").addEventListener("click", function () {
-            getJson("api/limit_logistics", function (limitlogistics) {
-                tableData = limitlogistics;
-                fillTable(tableData);
-            });
+        var tableData = [];
+        var targetTable = document.querySelector("#heading");
+        var dict = {};
+        getJson("js/dict.json", function (json) {
+            dict = json;
         });
 
         function fillTable(data) {
+
+
             // Fejléc generálása.
-            var head = "";
-            for (var k in data[0]) {
-                head += "<th>" + (dict[k] || "-") + "</th>";
-            }
-            targetTable.querySelector("thead tr").innerHTML = head;
+            // var head = "";
+            // for (var k in data[0]) {
+            //     head += "<th>" + (dict[k] || "-") + "</th>";
+            // }
+            // head += "<th></th>";
+            // targetTable.querySelector("thead tr").innerHTML = head;
 
             var content = "";
             for (var k in data) {
@@ -121,10 +116,40 @@
                 for (var j in data[k]) {
                     tr += "<td>" + data[k][j] + "</td>";
                 }
+                tr += '<td><button onclick="clickRowBtn(this)" class="btn btn-info row-btn" data-id="' + data[k].worker_id +
+                    '"' +
+                    '>tovább</button></td>';
                 content += tr + "</tr>";
             }
             targetTable.querySelector("tbody").innerHTML = content;
         }
+
+        // Fejléc generálása.
+        document.querySelector("#hr-head-btn").addEventListener("click", function () {
+            getJson("api/hr", function (customers) {
+                var table = "";
+                var tablehead = "";
+                var th = "";
+                var keyindex = "";
+                for (var i in Object.keys(customers[0])) {
+                    keyindex = Object.keys(customers[0])[i];
+                    th += "<th>" + keyindex + "</th>";
+                    console.log(keyindex);
+                }
+                tablehead += th;
+                document.querySelector("#hr-head").innerHTML = tablehead;
+                // for (var k in customers) {
+                //     var tr = "<tr>";
+                //     for (var j in customers[k]) {
+                //         tr += "<td>" + customers[k][j] + "</td>";
+                //     }
+                //     tr += "</tr>";
+                //     table += tr;
+                // }
+                // document.querySelector("#tablebody").innerHTML = table;
+            });
+
+        });
     </script>
 </body>
 
