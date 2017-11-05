@@ -53,6 +53,88 @@
         </div>
     </div>
 
+    <script src="api/main.js"></script>
+    <script>
+        var tableData = [];
+        var targetTable = document.querySelector("#eszter");
+        var dict = {};
+        getJson("js/dict.json", function (json) {
+            dict = json;
+        });
+        //Részleglekérő gombok : 
+        document.querySelector(".hr-btn")
+            .addEventListener("click", function () {
+                getJson("api/hr", function (hr) {
+                    tableData = hr;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".logistics-btn")
+            .addEventListener("click", function () {
+                getJson("api/logistics", function (logistics) {
+                    tableData = logistics;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".maintenance-btn")
+            .addEventListener("click", function () {
+                getJson("api/maintenance", function (maintenance) {
+                    tableData = maintenance;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".onelogistics-btn")
+            .addEventListener("click", function () {
+                getJson("api/one_logistics", function (onelogistics) {
+                    tableData = onelogistics;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".onemaintenance-btn")
+            .addEventListener("click", function () {
+                getJson("api/one_maintenance", function (onemaintenance) {
+                    tableData = onemaintenance;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".limitmaintenance-btn").addEventListener("click", function () {
+            getJson("api/limit_maintenance", function (maintenance) {
+                tableData = maintenance;
+                fillTable(tableData);
+            });
+        });
+
+        document.querySelector(".limitlogistics-btn").addEventListener("click", function () {
+            getJson("api/limit_logistics", function (limitlogistics) {
+                tableData = limitlogistics;
+                fillTable(tableData);
+            });
+        });
+
+        function fillTable(data) {
+            // Fejléc generálása.
+            var head = "";
+            for (var k in data[0]) {
+                head += "<th>" + (dict[k] || "-") + "</th>";
+            }
+            targetTable.querySelector("thead tr").innerHTML = head;
+
+            var content = "";
+            for (var k in data) {
+                var tr = "<tr>";
+                for (var j in data[k]) {
+                    tr += "<td>" + data[k][j] + "</td>";
+                }
+                content += tr + "</tr>";
+            }
+            targetTable.querySelector("tbody").innerHTML = content;
+        }
+    </script>
 
 
 
