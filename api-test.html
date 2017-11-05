@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-        crossorigin="anonymous">
+    <title>Házi feladat</title>
+    <!-- Bootstrap core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -18,10 +24,10 @@
                     <button class="btn btn-primary hr-btn">HumanResource</button>
                     <button class="btn btn-secondary logistics-btn">Logistics</button>
                     <button class="btn btn-success maintenance-btn">Maintenance</button>
-                    <button class="btn btn-one onelogistics-btn">Logisticsone</button>
-                    <button class="btn btn-one onemaintenance-btn">Maintenanceone</button>
-                    <button class="btn btn-one limitlogistics-btn">First Three Logistics</button>
-                    <button class="btn btn-one limitmaintenance-btn">First Three maintenance</button>
+                    <button class="btn btn-primary onelogistics-btn">Logisticsone</button>
+                    <button class="btn btn-secondary onemaintenance-btn">Maintenanceone</button>
+                    <button class="btn btn-success limitlogistics-btn">First Three Logistics</button>
+                    <button class="btn btn-primary limitmaintenance-btn">First Three maintenance</button>
 
 
                 </div>
@@ -126,6 +132,34 @@
             targetTable.querySelector("tbody").innerHTML = content;
         }
     </script>
+
+
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+        </div>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <footer class="sticky-footer">
+            <div class="container">
+                <div class="text-center">
+                    <small>Copyright © Márk, Niki, Zsombi 2017</small>
+                </div>
+            </div>
+        </footer>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- Bootstrap core JavaScript-->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="js/jquery.easing.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin.min.js"></script>
+    </div>
 </body>
 
 </html>
