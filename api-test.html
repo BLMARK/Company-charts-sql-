@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="btn-group">
+                    <button class="btn btn-primary hr-btn">HumanResource</button>
+                    <button class="btn btn-secondary logistics-btn">Logistics</button>
+                    <button class="btn btn-success maintenance-btn">Maintenance</button>
+                    <button class="btn btn-one onelogistics-btn">Logisticsone</button>
+                    <button class="btn btn-one onemaintenance-btn">Maintenanceone</button>
+                    <button class="btn btn-one limitlogistics-btn">First Three Logistics</button>
+                    <button class="btn btn-one limitmaintenance-btn">First Three maintenance</button>
+
+
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="row">
+            <table id="eszter" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="api/main.js"></script>
+    <script>
+        var tableData = [];
+        var targetTable = document.querySelector("#eszter");
+        var dict = {};
+        getJson("js/dict.json", function (json) {
+            dict = json;
+        });
+        //Részleglekérő gombok : 
+        document.querySelector(".hr-btn")
+            .addEventListener("click", function () {
+                getJson("api/hr", function (hr) {
+                    tableData = hr;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".logistics-btn")
+            .addEventListener("click", function () {
+                getJson("api/logistics", function (logistics) {
+                    tableData = logistics;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".maintenance-btn")
+            .addEventListener("click", function () {
+                getJson("api/maintenance", function (maintenance) {
+                    tableData = maintenance;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".onelogistics-btn")
+            .addEventListener("click", function () {
+                getJson("api/one_logistics", function (onelogistics) {
+                    tableData = onelogistics;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".onemaintenance-btn")
+            .addEventListener("click", function () {
+                getJson("api/one_maintenance", function (onemaintenance) {
+                    tableData = onemaintenance;
+                    fillTable(tableData);
+                });
+            });
+
+        document.querySelector(".limitmaintenance-btn").addEventListener("click", function () {
+            getJson("api/limit_maintenance", function (maintenance) {
+                tableData = maintenance;
+                fillTable(tableData);
+            });
+        });
+
+        document.querySelector(".limitlogistics-btn").addEventListener("click", function () {
+            getJson("api/limit_logistics", function (limitlogistics) {
+                tableData = limitlogistics;
+                fillTable(tableData);
+            });
+        });
+
+        function fillTable(data) {
+            // Fejléc generálása.
+            var head = "";
+            for (var k in data[0]) {
+                head += "<th>" + (dict[k] || "-") + "</th>";
+            }
+            targetTable.querySelector("thead tr").innerHTML = head;
+
+            var content = "";
+            for (var k in data) {
+                var tr = "<tr>";
+                for (var j in data[k]) {
+                    tr += "<td>" + data[k][j] + "</td>";
+                }
+                content += tr + "</tr>";
+            }
+            targetTable.querySelector("tbody").innerHTML = content;
+        }
+    </script>
+</body>
+
+</html>
